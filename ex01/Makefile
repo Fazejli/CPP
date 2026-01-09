@@ -2,12 +2,13 @@ NAME = MonRepertoire
 CC = c++
 FLAGS = -Wall -Wextra -Werror -str=c++98
 SRCS = Contact.cpp \
-		PhoneBook.cpp
+		PhoneBook.cpp \
+		main.cpp
 OBJS = $(SRCS:.cpp=.o)
 INC = Contact.hpp \
 	PhoneBook.hpp
 
-all : $(NAME
+all : $(NAME)
 
 $(NAME) : $(OBJS) $(INC)
 	$(CC) $(FLAGS) -I. $(OBJS) -o $(NAME)

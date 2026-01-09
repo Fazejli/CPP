@@ -39,21 +39,37 @@ void    PhoneBook::addContact(){
     newContact.setDarkestSecret(input);
 
     contacts[contactIndex] = newContact;
-    contactIndex += 1; 
-    if (contactIndex % 8 == 0)
-        contactIndex = 0;
-    //contactIndex = contactIndex+1 % 8;
+    contactIndex = (contactIndex + 1) % 8;
 }
 
 void    PhoneBook::displayAllContacts(){
-    int index(0);
+    Contact newContact;
+    int     index;
 
-    while (index < contactIndex)
+    index = 0;
+    std::cout << setfill('.') << std::endl;
+    std::cout << setw(10) << "index" << '|';
+    std::cout << setw(10) << "First Name" << '|';
+    std::cout << setw(10) << "Last Name" << '|';
+    std::cout << setw(10) << "Nickname" << std::endl;
+    while (index != 8)
     {
-        std::cout << "Number"
+        displayContact(index);
+        index++;
     }
 }
 
 void    PhoneBook::displayContact(int index){
+    Contact currentContact;
 
+    currentContact = contacts[index];
+    if (index == 8 || currentContact.getFirstNameirstName().empty())
+    {
+        std::cout << "Non existent contact." << std::endl;
+        return ;
+    }
+    std::cout << setw(10) << index << '|';
+    std::cout << setw(10) << currentContact.getFirstName() << '|';
+    std::cout << setw(10) << currentContact.getLastName() << '|';
+    std::cout << setw(10) << currentContact.getNickName() << std::endl;
 }
