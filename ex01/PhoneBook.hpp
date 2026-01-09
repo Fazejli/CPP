@@ -10,6 +10,7 @@ class PhoneBook{
     private:
     Contact         contacts[8];
     int             contactIndex;
+    std::string truncate(std::string str);
    
     public:
     PhoneBook();
