@@ -11,22 +11,22 @@ int main(int ac, char **av)
     while (1)
     {
         std::cout << "Enter a command: " << std::endl;
-        std::cin.ignore(input);
+        std::getline(std::cin, input);
         if (input == "ADD")
-            addContact();
+            phonebook.addContact();
         if (input == "SEARCH")
         {
-            displayAllContacts();
-            std::cin.ignore(index);
+            phonebook.displayAllContacts();
+            std::cin >> index;
             if (index <= 0 || index >= 8)
             {
                 std::cout << "Uknown." << std::endl;
                 return (0);
             }
             index -= 1;
-            displayContact(index);
+            phonebook.displayContact(index);
         }
-        if (input == EXIT)
+        if (input == "EXIT")
             break ;
     }
     return (1);

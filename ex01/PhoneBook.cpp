@@ -53,16 +53,18 @@ void    PhoneBook::displayContact(int index){
     Contact currentContact;
 
     currentContact = contacts[index];
-    if (index == 8 || currentContact.getFirstNameirstName().empty())
+    if (index == 8 || currentContact.getFirstName().empty())
     {
         std::cout << "Non existent contact." << std::endl;
         return ;
     }
-    std::cout << std::setfille(" ") << endl;
-    std::cout << "Index: " std::setw(10) << index << '|';
+    std::cout << std::setfille(' ') << std::endl;
+    std::cout << "Index: " << std::setw(10) << index << '|';
     std::cout << "First Name: " << std::setw(10) << truncate(currentContact.getFirstName()) << '|';
     std::cout << "Last Name: " << std::setw(10) << truncate(currentContact.getLastName()) << '|';
-    std::cout << "Nickname: " << std::setw(10) << truncate(currentContact.getNickName()) << std::endl;
+    std::cout << "Nickname: " << std::setw(10) << truncate(currentContact.getNickName()) << '|';
+    std::cout << "Phone Number: " << std::setw(10) << truncate(currentContact.getPhoneNumber()) << '|';
+    std::cout << "Darkest Secret: " << std::setw(10) << truncate(currentContact.getDarkestSecret()) << std::endl;
 }
 
 void    PhoneBook::displayAllContacts(){
