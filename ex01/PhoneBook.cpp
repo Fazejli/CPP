@@ -80,7 +80,7 @@ void    PhoneBook::displayAllContacts(){
     {
         if (currentContact.getFirstName().empty())
             break ;
-        std::cout << std::setfill(" ") << sstd::endl;
+        std::cout << std::setfill(" ") << std::endl;
         std::cout << std::setw(10) << index << '|';
         std::cout << std::setw(10) << PhoneBook::truncate(currentContact.getFirstName()) << '|';
         std::cout << std::setw(10) << PhoneBook::truncate(currentContact.getLastName()) << '|';
