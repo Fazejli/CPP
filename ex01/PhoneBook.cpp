@@ -42,21 +42,11 @@ void    PhoneBook::addContact(){
     contactIndex = (contactIndex + 1) % 8;
 }
 
-void    PhoneBook::displayAllContacts(){
-    Contact newContact;
-    int     index;
-
-    index = 0;
-    std::cout << setfill('.') << std::endl;
-    std::cout << setw(10) << "index" << '|';
-    std::cout << setw(10) << "First Name" << '|';
-    std::cout << setw(10) << "Last Name" << '|';
-    std::cout << setw(10) << "Nickname" << std::endl;
-    while (index != 8)
-    {
-        displayContact(index);
-        index++;
+std::string PhoneBook::truncate(std::string str) {
+    if (str.length() > 10) {
+        return str.substr(0, 9) + ".";
     }
+    return str;
 }
 
 void    PhoneBook::displayContact(int index){
@@ -68,8 +58,32 @@ void    PhoneBook::displayContact(int index){
         std::cout << "Non existent contact." << std::endl;
         return ;
     }
-    std::cout << setw(10) << index << '|';
-    std::cout << setw(10) << currentContact.getFirstName() << '|';
-    std::cout << setw(10) << currentContact.getLastName() << '|';
-    std::cout << setw(10) << currentContact.getNickName() << std::endl;
+    std::cout << std::setfille(" ") << endl;
+    std::cout << "Index: " std::setw(10) << index << '|';
+    std::cout << "First Name: " << std::setw(10) << truncate(currentContact.getFirstName()) << '|';
+    std::cout << "Last Name: " << std::setw(10) << truncate(currentContact.getLastName()) << '|';
+    std::cout << "Nickname: " << std::setw(10) << truncate(currentContact.getNickName()) << std::endl;
+}
+
+void    PhoneBook::displayAllContacts(){
+    Contact currentContact;
+    int     index;
+
+    index = 0;
+    currentContact = contacts[index];
+    std::cout << std::setw(10) << "Index" << '|';
+    std::cout << std::setw(10) << "First Name" << '|';
+    std::cout << std::setw(10) << "Last Name" << '|';
+    std::cout << std::setw(10) << "Nickname" << std::endl;
+    while (index < 8)
+    {
+        if (currentContact.getFirstName().empty())
+            break ;
+        std::cout << std::setfille(" ") << endl;
+        std::cout << std::setw(10) << index << '|';
+        std::cout << std::setw(10) << truncate(currentContact.getFirstName()) << '|';
+        std::cout << std::setw(10) << truncate(currentContact.getLastName()) << '|';
+        std::cout << std::setw(10) << truncate(currentContact.getNickName()) << std::endl;
+        index++;
+    }
 }
