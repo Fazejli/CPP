@@ -58,13 +58,12 @@ void    PhoneBook::displayContact(int index){
         std::cout << "Non existent contact." << std::endl;
         return ;
     }
-    std::cout << std::setfille(' ') << std::endl;
-    std::cout << "Index: " << std::setw(10) << index << '|';
-    std::cout << "First Name: " << std::setw(10) << truncate(currentContact.getFirstName()) << '|';
-    std::cout << "Last Name: " << std::setw(10) << truncate(currentContact.getLastName()) << '|';
-    std::cout << "Nickname: " << std::setw(10) << truncate(currentContact.getNickName()) << '|';
-    std::cout << "Phone Number: " << std::setw(10) << truncate(currentContact.getPhoneNumber()) << '|';
-    std::cout << "Darkest Secret: " << std::setw(10) << truncate(currentContact.getDarkestSecret()) << std::endl;
+    std::cout << "Index: " << index << '|';
+    std::cout << "First Name: " << currentContact.getFirstName() << '|';
+    std::cout << "Last Name: " << currentContact.getLastName() << '|';
+    std::cout << "Nickname: " << currentContact.getNickName() << '|';
+    std::cout << "Phone Number: " << currentContact.getPhoneNumber() << '|';
+    std::cout << "Darkest Secret: " << currentContact.getDarkestSecret() << std::endl;
 }
 
 void    PhoneBook::displayAllContacts(){
@@ -81,11 +80,11 @@ void    PhoneBook::displayAllContacts(){
     {
         if (currentContact.getFirstName().empty())
             break ;
-        std::cout << std::setfille(" ") << endl;
+        std::cout << setfill(" ") << endl;
         std::cout << std::setw(10) << index << '|';
-        std::cout << std::setw(10) << truncate(currentContact.getFirstName()) << '|';
-        std::cout << std::setw(10) << truncate(currentContact.getLastName()) << '|';
-        std::cout << std::setw(10) << truncate(currentContact.getNickName()) << std::endl;
+        std::cout << std::setw(10) << Phonebook::truncate(currentContact.getFirstName()) << '|';
+        std::cout << std::setw(10) << Phonebook::truncate(currentContact.getLastName()) << '|';
+        std::cout << std::setw(10) << Phonebook::truncate(currentContact.getNickName()) << std::endl;
         index++;
     }
 }
