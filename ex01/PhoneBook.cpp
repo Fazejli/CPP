@@ -42,10 +42,10 @@ void    PhoneBook::addContact(){
     contactIndex = (contactIndex + 1) % 8;
 }
 
-std::string PhoneBook::truncate(std::string str) 
-{
-    if (str.length() > 10)
+std::string PhoneBook::truncate(std::string str) {
+    if (str.length() > 10) {
         return str.substr(0, 9) + ".";
+    }
     return str;
 }
 
