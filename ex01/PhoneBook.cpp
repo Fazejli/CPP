@@ -42,27 +42,31 @@ void    PhoneBook::addContact(){
     contactIndex = (contactIndex + 1) % 8;
 }
 
-std::string PhoneBook::truncate(std::string str) {
-    if (str.length() > 10) {
+std::string PhoneBook::truncate(std::string str) 
+{
+    if (str.length() > 10)
         return str.substr(0, 9) + ".";
-    }
     return str;
 }
 
 void    PhoneBook::displayContact(int index){
     Contact currentContact;
 
+    if (index < 0 || index >= 8)
+    {
+        std::cout << "Invalid index." << std::endl;
+        return ;
+    }   
     currentContact = contacts[index];
-    if (index == 8 || currentContact.getFirstName().empty())
+    if (currentContact.getFirstName().empty())
     {
         std::cout << "Non existent contact." << std::endl;
         return ;
     }
-    std::cout << "Index: " << index << '|';
-    std::cout << "First Name: " << currentContact.getFirstName() << '|';
-    std::cout << "Last Name: " << currentContact.getLastName() << '|';
-    std::cout << "Nickname: " << currentContact.getNickName() << '|';
-    std::cout << "Phone Number: " << currentContact.getPhoneNumber() << '|';
+    std::cout << "First Name: " << currentContact.getFirstName() << std::endl;
+    std::cout << "Last Name: " << currentContact.getLastName() << std::endl;
+    std::cout << "Nickname: " << currentContact.getNickName() << std::endl;
+    std::cout << "Phone Number: " << currentContact.getPhoneNumber() << std::endl;
     std::cout << "Darkest Secret: " << currentContact.getDarkestSecret() << std::endl;
 }
 
@@ -71,20 +75,20 @@ void    PhoneBook::displayAllContacts(){
     int     index;
 
     index = 0;
-    currentContact = contacts[index];
     std::cout << std::setw(10) << "Index" << '|';
     std::cout << std::setw(10) << "First Name" << '|';
     std::cout << std::setw(10) << "Last Name" << '|';
     std::cout << std::setw(10) << "Nickname" << std::endl;
     while (index < 8)
     {
+        currentContact = contacts[index];
         if (currentContact.getFirstName().empty())
             break ;
-        std::cout << std::setfill(" ") << std::endl;
+        std::cout << std::setfill(' ');
         std::cout << std::setw(10) << index << '|';
-        std::cout << std::setw(10) << PhoneBook::truncate(currentContact.getFirstName()) << '|';
-        std::cout << std::setw(10) << PhoneBook::truncate(currentContact.getLastName()) << '|';
-        std::cout << std::setw(10) << PhoneBook::truncate(currentContact.getNickName()) << std::endl;
+        std::cout << std::setw(10) << truncate(currentContact.getFirstName()) << '|';
+        std::cout << std::setw(10) << truncate(currentContact.getLastName()) << '|';
+        std::cout << std::setw(10) << truncate(currentContact.getNickName()) << std::endl;
         index++;
     }
 }

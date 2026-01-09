@@ -12,19 +12,25 @@ int main(int ac, char **av)
     {
         std::cout << "Enter a command: " << std::endl;
         std::getline(std::cin, input);
+        if (std::cin.eof())
+            break ;
         if (input == "ADD")
             phonebook.addContact();
-        if (input == "SEARCH")
+        else if (input == "SEARCH")
         {
             phonebook.displayAllContacts();
             std::cin >> index;
-            if (index <= 0 || index >= 8)
+            if (std::cin.fail())
             {
-                std::cout << "Uknown." << std::endl;
-                return (0);
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+                std::cout << "Invalid input." << std::endl;
             }
-            index -= 1;
-            phonebook.displayContact(index);
+            else
+            {
+                std::cin.ignore(10000, '\n');
+                phonebook.displayContact(index);
+            }
         }
         if (input == "EXIT")
             break ;
