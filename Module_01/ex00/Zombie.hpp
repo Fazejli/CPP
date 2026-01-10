@@ -8,17 +8,16 @@
 class Zombie{
     private:
     std::string _name;
+    //Fctn d'annonce
+    void announce(void);
 
     public:
     //constructeur
     Zombie(std::string name);
     //destructeur
     ~Zombie();
-    //Fctn d'annonce
-    void announce(void);
+    Zombie* newZombie(str name);
+	void	randomChump(str name);
 };
-
-Zombie* newZombie(std::string name);
-void randomChump(std::string name);
 
 #endif
