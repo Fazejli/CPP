@@ -1,4 +1,4 @@
-NAME = MonRepertoire
+NAME = zombies
 CC = c++
 FLAGS = -Wall -Wextra -Werror -std=c++98
 SRCS = main.cpp \
@@ -6,8 +6,7 @@ SRCS = main.cpp \
 	Zombie.cpp \
 	randomChump.cpp
 OBJS = $(SRCS:.cpp=.o)
-INC = Contact.hpp \
-	PhoneBook.hpp
+INC = Zombie.hpp
 
 all : $(NAME)
 
