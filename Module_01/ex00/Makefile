@@ -4,7 +4,7 @@ FLAGS = -Wall -Wextra -Werror -std=c++98
 SRCS = main.cpp \
 	newZombie.cpp \
 	Zombie.cpp \
-	randomChum.cpp
+	randomChump.cpp
 OBJS = $(SRCS:.cpp=.o)
 INC = Contact.hpp \
 	PhoneBook.hpp

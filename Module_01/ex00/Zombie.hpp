@@ -7,7 +7,7 @@
 
 class Zombie{
     private:
-    std::string name;
+    std::string _name;
 
     public:
     //constructeur
@@ -16,7 +16,7 @@ class Zombie{
     ~Zombie();
     //Fctn d'annonce
     void announce(void);
-}
+};
 
 Zombie* newZombie(std::string name);
 void randomChump(std::string name);
