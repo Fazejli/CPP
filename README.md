@@ -3,7 +3,7 @@
 > A series of 10 modules covering C++ fundamentals through advanced OOP and STL.
 
 ![Score](https://img.shields.io/badge/Score-100%2F100-brightgreen?style=flat-square)
-Working on it..
+![CPP](https://img.shields.io/badge/Circle_2-In_Progress-orange?style=flat-square)
 ![Language](https://img.shields.io/badge/Language-C++-00599C?style=flat-square&logo=cplusplus&logoColor=white)
 ![School](https://img.shields.io/badge/School-42-000000?style=flat-square)
 
