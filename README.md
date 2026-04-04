@@ -17,18 +17,18 @@ The C++ modules at 42 are a progressive series of exercises designed to teach C+
 
 ## 📚 Modules Overview
 
-| Module | Topics |
-|--------|--------|
-| **CPP00** | Namespaces, classes, member functions, stdio streams, initialization lists |
-| **CPP01** | Memory allocation, references, pointers to members, file streams |
-| **CPP02** | Ad-hoc polymorphism, operator overloading, Orthodox Canonical Form |
-| **CPP03** | Inheritance, base/derived classes |
-| **CPP04** | Subtype polymorphism, abstract classes, interfaces, virtual functions |
-| **CPP05** | Repetition and exceptions — try/catch, custom exception classes |
-| **CPP06** | C++ casts — `static_cast`, `dynamic_cast`, `reinterpret_cast`, `const_cast` |
-| **CPP07** | Templates — function templates, class templates |
-| **CPP08** | Templated containers, iterators, algorithms — STL |
-| **CPP09** | STL containers in practice — `std::map`, `std::stack`, `std::vector` |
+| Module | Topics | Score |
+|--------|--------|-------|
+| **CPP00** | Namespaces, classes, member functions, stdio streams, initialization lists | 80% |
+| **CPP01** | Memory allocation, references, pointers to members, file streams | 90% |
+| **CPP02** | Ad-hoc polymorphism, operator overloading, Orthodox Canonical Form | 100% |
+| **CPP03** | Inheritance, base/derived classes | 100% |
+| **CPP04** | Subtype polymorphism, abstract classes, interfaces, virtual functions | 100% |
+| **CPP05** | Repetition and exceptions — try/catch, custom exception classes | In Progress |
+| **CPP06** | C++ casts — `static_cast`, `dynamic_cast`, `reinterpret_cast`, `const_cast` | In Progress |
+| **CPP07** | Templates — function templates, class templates | In Progress |
+| **CPP08** | Templated containers, iterators, algorithms — STL | In Progress |
+| **CPP09** | STL containers in practice — `std::map`, `std::stack`, `std::vector` | In Progress |
 
 ---
 
