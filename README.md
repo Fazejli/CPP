@@ -19,8 +19,8 @@ The C++ modules at 42 are a progressive series of exercises designed to teach C+
 
 | Module | Topics | Score |
 |--------|--------|-------|
-| **CPP00** | Namespaces, classes, member functions, stdio streams, initialization lists | 80% |
-| **CPP01** | Memory allocation, references, pointers to members, file streams | 90% |
+| **CPP00** | Namespaces, classes, member functions, stdio streams, initialization lists |   80%|
+| **CPP01** | Memory allocation, references, pointers to members, file streams |   90%|
 | **CPP02** | Ad-hoc polymorphism, operator overloading, Orthodox Canonical Form | 100% |
 | **CPP03** | Inheritance, base/derived classes | 100% |
 | **CPP04** | Subtype polymorphism, abstract classes, interfaces, virtual functions | 100% |
