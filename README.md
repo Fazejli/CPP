@@ -51,8 +51,7 @@ make
 cpp-modules/
 ├── Module_00/
 │   ├── ex00/   # Megaphone
-│   ├── ex01/   # My Awesome PhoneBook
-│   └── ex02/   # The Job Of Your Dreams
+│   └── ex01/   # My Awesome PhoneBook
 ├── Module_01/
 │   ├── ex00/   # BraiiiiiiinnnzzzZ
 │   └── ...
