@@ -6,7 +6,7 @@
 /*   By: fadwa <fadwa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 14:22:35 by fadzejli          #+#    #+#             */
-/*   Updated: 2026/04/16 22:06:12 by fadwa            ###   ########.fr       */
+/*   Updated: 2026/04/16 22:53:29 by fadwa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ PresidentialPardonForm::~PresidentialPardonForm(){}
 PresidentialPardonForm & PresidentialPardonForm::operator=(const PresidentialPardonForm & src){
     if (this != &src){
         AForm::operator=(src);
-        *this = src;
+        this->_target = src._target;
     }
     return (*this);
 }

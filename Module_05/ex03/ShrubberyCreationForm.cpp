@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ShrubberyCreationForm.cpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fadzejli <fadzejli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fadwa <fadwa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 14:15:34 by fadzejli          #+#    #+#             */
-/*   Updated: 2026/04/16 15:04:34 by fadzejli         ###   ########.fr       */
+/*   Updated: 2026/04/16 22:54:42 by fadwa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm & f) : 
 ShrubberyCreationForm::~ShrubberyCreationForm(){}
 
 ShrubberyCreationForm & ShrubberyCreationForm::operator=(const ShrubberyCreationForm & src){
-    if (this != &src)
-        *this = src;
+    if (this != &src){
+        AForm::operator=(src);
+        this->_target = src._target;}
     return (*this);
 }
 

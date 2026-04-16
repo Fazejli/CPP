@@ -6,7 +6,7 @@
 /*   By: fadwa <fadwa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 19:58:09 by fadzejli          #+#    #+#             */
-/*   Updated: 2026/04/16 22:09:10 by fadwa            ###   ########.fr       */
+/*   Updated: 2026/04/16 22:56:30 by fadwa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,6 @@ AForm* Intern::makeForm(std::string formName, std::string target) {
             return creators[i](target);
         }
     }
-   throw UnknownForm();;
+   throw UnknownForm();
     return NULL;
 }

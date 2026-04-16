@@ -17,10 +17,17 @@ int main(void)
     Bureaucrat b;
     AForm *form = NULL;
 
+    try {
+        form = someIntern.makeForm("players", "cr7");
+        std::cout << *form << std::endl;
+    }
+    catch (std::exception &e) {
+            std::cerr << e.what() << std::endl; }
+    delete form;
+    form = NULL;
     std::cout << GREEN << "== Basic ShrubberyCreationForm Test ==" << RESET << std::endl;
-    form = someIntern.makeForm("shrubbery creation", "garden");
-    if (form)
-    {
+    try{
+        form = someIntern.makeForm("shrubbery creation", "garden");
         std::cout << *form << std::endl;
         try {
             Bureaucrat bob("Bob", 130);
@@ -30,7 +37,9 @@ int main(void)
         catch (std::exception &e) {
             std::cerr << e.what() << std::endl; }
         delete form;
-        form = NULL;
+        form = NULL;}
+    catch (Intern::UnknownForm & e){
+        std::cerr << RED << e.what() << RESET << std::endl;
     }
 
     std::cout << GREEN << "\n== Basic RobotomyRequestForm Test " << RESET << std::endl;
@@ -69,17 +78,14 @@ int main(void)
     }
 
     std::cout << GREEN << "\n== Test: Non existing Form" << RESET << std::endl;
-    form = someIntern.makeForm("coffee request", "Nobody");
-    if (form){
-        try {
+    try {
+            form = someIntern.makeForm("coffee request", "Nobody");
             b.signForm(*form);
-            std::cout << "Form created successfully!" << std::endl;
-        }
-        catch(std::exception &e){
+            std::cout << "Form created successfully!" << std::endl;}
+    catch(std::exception &e){
             std::cerr << e.what() << std::endl; }
-        delete form;
-        form = NULL;}
-
+    delete form;
+    form = NULL;
     
     std::cout << GREEN << "\n== Signature Test " << RESET << std::endl;
     form = someIntern.makeForm("presidential pardon", "Target");
@@ -122,5 +128,7 @@ int main(void)
     catch(Intern::UnknownForm & e) {
         std::cerr << RED << e.what() << RESET << std::endl;
     }
+    delete form;
+    form = NULL;
     return 0;
 }
