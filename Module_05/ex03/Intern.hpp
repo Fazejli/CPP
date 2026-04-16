@@ -6,7 +6,7 @@
 /*   By: fadwa <fadwa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 19:53:49 by fadzejli          #+#    #+#             */
-/*   Updated: 2026/04/10 15:41:12 by fadwa            ###   ########.fr       */
+/*   Updated: 2026/04/16 22:13:49 by fadwa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ class Intern {
         Intern &operator=(const Intern & s);
         
         AForm *makeForm(std::string name, std::string target);
+        class UnknownForm : public std::exception {
+        public:
+            const char* what() const throw() {
+                return ("Unknown form name");}};
     
     private:
         typedef AForm* (*FormCreator)(std::string target);

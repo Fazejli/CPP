@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PresidentialPardonForm.cpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fadzejli <fadzejli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fadwa <fadwa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 14:22:35 by fadzejli          #+#    #+#             */
-/*   Updated: 2026/04/16 15:01:52 by fadzejli         ###   ########.fr       */
+/*   Updated: 2026/04/16 22:06:12 by fadwa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm & f)
 PresidentialPardonForm::~PresidentialPardonForm(){}
 
 PresidentialPardonForm & PresidentialPardonForm::operator=(const PresidentialPardonForm & src){
-    if (this != &src)
+    if (this != &src){
+        AForm::operator=(src);
         *this = src;
+    }
     return (*this);
 }
 

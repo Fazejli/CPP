@@ -110,15 +110,17 @@ int main(void)
     }
 
     std::cout << GREEN << "\n== More Tests ==" << RESET << std::endl;
-    form = someIntern.makeForm("presidential pardon", "Charlie");
-    if (form)
-    {
+    try {
+        form = someIntern.makeForm("presidential pardon", "Charlie");
         Bureaucrat signer("Signer", 1);
         signer.signForm(*form);
         Bureaucrat tooLow("TooLow", 100);
         tooLow.executeForm(*form);
         delete form; 
         form = NULL;
+    }
+    catch(Intern::UnknownForm & e) {
+        std::cerr << RED << e.what() << RESET << std::endl;
     }
     return 0;
 }

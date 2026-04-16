@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RobotomyRequestForm.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fadzejli <fadzejli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fadwa <fadwa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 14:22:35 by fadzejli          #+#    #+#             */
-/*   Updated: 2026/04/16 14:38:54 by fadzejli         ###   ########.fr       */
+/*   Updated: 2026/04/16 22:06:56 by fadwa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void RobotomyRequestForm::execute(Bureaucrat const & executor) const{
     else{
         if (rand() % 2 == 0){
             std::cout << "** drilling noise **" << std::endl;
-            std::cout << this->_target << " has been robotomized successfull." << std::endl;}
+            std::cout << this->_target << " has been robotomized successfully." << std::endl;}
         else
             std::cout << "Robotomy has failed" << std::endl;
     }

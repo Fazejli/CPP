@@ -32,7 +32,7 @@ AForm::AForm(const std::string name, const int sGrade, const int eGrade) : _form
 AForm::~AForm(){}
 
 AForm & AForm::operator=(const AForm & src){
-    std::cout << "OPerator called" << std::endl;
+    //std::cout << "OPerator called" << std::endl;
     if (this != &src)
         this->_signed = src._signed;
     return (*this);

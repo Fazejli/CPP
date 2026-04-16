@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Intern.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fadzejli <fadzejli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fadwa <fadwa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 19:58:09 by fadzejli          #+#    #+#             */
-/*   Updated: 2026/04/16 15:27:33 by fadzejli         ###   ########.fr       */
+/*   Updated: 2026/04/16 22:09:10 by fadwa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,6 @@ AForm* Intern::makeForm(std::string formName, std::string target) {
             return creators[i](target);
         }
     }
-    std::cout << RED << "Error: form \"" << formName << "\" does not exist." << RESET << std::endl;
+   throw UnknownForm();;
     return NULL;
 }
