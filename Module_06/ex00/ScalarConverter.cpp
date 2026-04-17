@@ -46,10 +46,10 @@ bool isDouble(std::string value){
 }
 
 std::string detectType(std::string value){
-    if (isInt(value))
-        return ("int");
-    else if (isChar(value))
+    if (isChar(value))
         return ("char");
+    else if (isInt(value))
+        return ("int"); 
     else if (isFloat(value))
         return ("float");
     else if (isDouble(value))
