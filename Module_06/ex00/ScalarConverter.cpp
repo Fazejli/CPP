@@ -54,7 +54,7 @@ std::string detectType(std::string value){
         return ("float");
     else if (isDouble(value))
         return ("double");
-    return ("Uknown");
+    return ("unkown");
 }
 
 /*void    printFloat(std::string value){}*/
@@ -64,7 +64,7 @@ void    printChar(std::string value){
     std::cout << "char: " << c << std::endl;
     std::cout << "int: " << static_cast<int>(c) << std::endl;
 //a revoir
-    std::cout << std:fixed << std::setprecision(1);
+    std::cout << std::fixed << std::setprecision(1);
     std::cout << "float: " << static_cast<float>(c) << "f" << std::endl;
     std::cout << "double: " << static_cast<double>(c) << std::endl;
 }
@@ -72,7 +72,7 @@ void    printChar(std::string value){
 void    printInt(std::string value){
     std::istringstream s(value);
     int nb;
-    s >> nb && s.eof();
+    if (!(s >> nb) || !s.eof()) return ;
     char c = static_cast<char>(nb);
     if (!isprint(c))
         std::cout << "char: non displayable" << std::endl;
@@ -82,7 +82,7 @@ void    printInt(std::string value){
         std::cout << "char: impossible" << std::endl;
     std::cout << "int: " << nb << std::endl;
 //a revoir
-    std::cout << std:fixed << std::setprecision(1);
+    std::cout << std::fixed << std::setprecision(1);
     std::cout << "float: " << static_cast<float>(nb) << "f" << std::endl;
     std::cout << "double: " << static_cast<double>(nb) << std::endl;
 }
@@ -102,6 +102,8 @@ void    printDouble(std::string value){
             std::cout << "char: non displayable" << std::endl;
         else if (c > 0 && c < 127)
             std::cout << "char: '" << c << "'"<< std::endl;
+        else
+            std::cout << "char: impossible" << std::endl;
         std::cout << "int: " << static_cast<int>(nb) << std::endl;
         std::cout << std::fixed << std::setprecision(1);
         std::cout << "float: " << static_cast<float>(nb) << "f" << std::endl;
