@@ -53,7 +53,7 @@ int main(){
         std::cerr << RED << e.what() << RESET << std::endl;
     }
 
-    std::cout << GREEN << "\n== Form Exec Test ==" << RESET << std::endl;
+    std::cout << GREEN << "\n== Form Exec Test (signature)==" << RESET << std::endl;
     try {
         ShrubberyCreationForm shrub2("toto");
         Bureaucrat lazy("Lazy", 1);
@@ -64,7 +64,7 @@ int main(){
         std::cerr << RED << e.what() << RESET << std::endl;
     }
 
-    std::cout << GREEN << "\n== Error Tests: Execution error ==" << RESET << std::endl;
+    std::cout << GREEN << "\n== Error Tests: Execution error (grade)==" << RESET << std::endl;
     try {
         PresidentialPardonForm pardon2("Charlie");
         Bureaucrat t("Trump", 1);

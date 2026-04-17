@@ -6,7 +6,7 @@
 /*   By: fadzejli <fadzejli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 14:00:39 by fadzejli          #+#    #+#             */
-/*   Updated: 2026/04/16 13:47:00 by fadzejli         ###   ########.fr       */
+/*   Updated: 2026/04/17 09:42:56 by fadzejli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ class Bureaucrat {
 			public:
 				const char * what() const throw(){
 					return("Invalid grade: Too Low (out of range : 1 - 150)");}};
-	protected:
+	private:
 		const std::string _name;
 		int _grade;
 	
