@@ -1,5 +1,6 @@
 #include "ScalarConverter.hpp"
 #include <iomanip>
+#include <cmath>
 
 ScalarConverter::ScalarConverter(const ScalarConverter & src){
     (void)src;
@@ -22,7 +23,7 @@ bool isChar(std::string value){
     s >> c;
     if (c.length() != 1)
         return (false);
-    return (c[0]) && s.eof();
+    return s.eof();
 }
 
 bool isFloat(std::string value){
@@ -62,17 +63,16 @@ void    printChar(std::string value){
     char c = value[0];
     std::cout << "char: " << c << std::endl;
     std::cout << "int: " << static_cast<int>(c) << std::endl;
-    std::cout << "float: " << static_cast<float>(c) << ".0f" << std::endl;
-    std::cout << "double: " << static_cast<double>(c) << ".0" << std::endl;
+//a revoir
+    std::cout << std:fixed << std::setprecision(1);
+    std::cout << "float: " << static_cast<float>(c) << "f" << std::endl;
+    std::cout << "double: " << static_cast<double>(c) << std::endl;
 }
 
 void    printInt(std::string value){
     std::istringstream s(value);
     int nb;
-    if (!(s >> nb) || !s.eof()) {
-        std::cerr << RED << "Invalid integer" << RESET << std::endl;
-        return;
-    }
+    s >> nb && s.eof();
     char c = static_cast<char>(nb);
     if (!isprint(c))
         std::cout << "char: non displayable" << std::endl;
@@ -80,34 +80,33 @@ void    printInt(std::string value){
         std::cout << "char: '" << c << "'"<< std::endl;
     else
         std::cout << "char: impossible" << std::endl;
-    if (value == "nan" || value == "nanf")
-        std::cout << "int: i,possible" << std::endl;
-    else
-        std::cout << "int: " << nb << std::endl;
-    std::cout << "float: " << static_cast<float>(nb) << ".0f" << std::endl;
-    std::cout << "double: " << static_cast<double>(nb) << ".0" << std::endl;
+    std::cout << "int: " << nb << std::endl;
+//a revoir
+    std::cout << std:fixed << std::setprecision(1);
+    std::cout << "float: " << static_cast<float>(nb) << "f" << std::endl;
+    std::cout << "double: " << static_cast<double>(nb) << std::endl;
 }
 
 void    printDouble(std::string value){
     std::istringstream s(value);
     double nb;
     s >> nb;
-    char c = static_cast<char>(nb);
-    if (!isprint(c))
-        std::cout << "char: non displayable" << std::endl;
-    else if (c > 0 && c < 127)
-        std::cout << "char: '" << c << "'"<< std::endl;
-    else
+    if (std::isnan(nb) || std::isinf(nb)) {
         std::cout << "char: impossible" << std::endl;
-    std::cout << "int: " << static_cast<int>(nb) << std::endl;
-    /*if (isnan(nb))
-    {
+        std::cout << "int: impossible" << std::endl;
         std::cout << "float: nanf" << std::endl;
         std::cout << "double: nan" << std::endl;
-    }
-    else{*/
-        std::cout << "float: " << static_cast<float>(nb) << std::endl;
+    } else {
+        char c = static_cast<char>(nb);
+        if (!isprint(c))
+            std::cout << "char: non displayable" << std::endl;
+        else if (c > 0 && c < 127)
+            std::cout << "char: '" << c << "'"<< std::endl;
+        std::cout << "int: " << static_cast<int>(nb) << std::endl;
+        std::cout << std::fixed << std::setprecision(1);
+        std::cout << "float: " << static_cast<float>(nb) << "f" << std::endl;
         std::cout << "double: " << nb << std::endl;
+    }
 }
 
 void ScalarConverter::convert(std::string value) {
