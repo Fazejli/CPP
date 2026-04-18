@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fadzejli <fadzejli@student.42.fr>          +#+  +:+       +#+         #
+#    By: fadwa <fadwa@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/07 14:00:41 by fadzejli          #+#    #+#              #
-#    Updated: 2026/04/17 13:02:20 by fadzejli         ###   ########.fr        #
+#    Updated: 2026/04/17 17:29:07 by fadwa            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,4 +32,4 @@ fclean: clean
 
 re : fclean all
 
-.Phony: all clean fclean re
+.PHONY: all clean fclean re
