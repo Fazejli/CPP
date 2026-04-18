@@ -6,14 +6,14 @@
 #    By: fadzejli <fadzejli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/07 14:00:41 by fadzejli          #+#    #+#              #
-#    Updated: 2026/04/18 11:45:03 by fadzejli         ###   ########.fr        #
+#    Updated: 2026/04/18 13:19:57 by fadzejli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = convert
+NAME = serialize
 CPP = c++
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98
-SRC = main.cpp ScalarConverter.cpp
+SRC = main.cpp Serializer.cpp
 OBJ = $(SRC:.cpp=.o)
 
 all : $(NAME)

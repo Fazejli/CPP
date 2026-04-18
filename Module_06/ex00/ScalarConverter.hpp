@@ -10,12 +10,14 @@
 #define WHITE   "\033[37m"
 #define RESET   "\033[0m"
 
-#define ERR_MSG "Error: Invalid input. Please provide a valid scalar value."
+#define ERR_MSG "Error: Invalid input.\nUsage: ./convert <value>."
 
 #include <string>
 #include <iostream>
 #include <sstream>
 #include <limits>
+#include <cmath>
+#include <climits>
 
 class ScalarConverter{
     public:
