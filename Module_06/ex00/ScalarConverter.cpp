@@ -1,174 +1,143 @@
 #include "ScalarConverter.hpp"
-#include <iomanip>
-#include <cmath>
-#include <limits>
 
-ScalarConverter::ScalarConverter(const ScalarConverter & src){
+ScalarConverter::ScalarConverter(const ScalarConverter &src)
+{
     (void)src;
 }
 
-ScalarConverter & ScalarConverter::operator=(const ScalarConverter & src){
+ScalarConverter &ScalarConverter::operator=(const ScalarConverter &src)
+{
     (void)src;
     return *this;
 }
 
-bool isInt(std::string value){
-    std::istringstream s(value);
+static bool isInt(std::string value)
+{
     int nb;
-    return (s >> nb) && s.eof();
-}
-
-bool isChar(std::string value){
     std::istringstream s(value);
-    std::string c;
-    s >> c;
-    if (c.length() != 1)
-        return (false);
-    return s.eof();
+    s >> nb;
+    return (!s.fail()) && s.eof();
 }
 
-bool isFloat(std::string value){
-    if (value == "nanf" || value == "inff" || value == "+inff" || value == "-inff")
+static bool isFloat(std::string value)
+{
+    if (value == "inff" || value == "-inff" || value == "+inff" || value == "nanf")
         return true;
-    if (value.empty() || value[value.length() - 1] != 'f')
+    if (value[value.length() -1] != 'f')
+        return false ;
+    if (!isdigit(value[0]) && value[0] != '-' && value[0] != '+')
         return false;
     std::string newVal = value.substr(0, value.length() - 1);
+    float f;
     std::istringstream s(newVal);
-    float nb;
-    return (s >> nb) && s.eof();
+    s >> f;
+    return (!s.fail()) && s.eof();
 }
 
-bool isDouble(std::string value){
-    if (value == "nan" || value == "inf" || value == "+inf" || value == "-inf")
+static bool isDouble(std::string value)
+{
+    if (value == "inf" || value == "-inf" || value == "+inf" || value == "nan")
         return true;
-    std::istringstream s(value);
     double d;
-    return (s >> d) && s.eof();
+    std::istringstream s(value);
+    s >> d;
+     return ((!s.fail()) || isinf(d)) && s.eof();
 }
 
-std::string detectType(std::string value){
-    if (isChar(value))
+
+static std::string detectType(std::string value)
+{
+    if (value.empty())
+        return ("null");
+    if (value.length() == 1 && !isdigit(value[0]))
         return ("char");
     else if (isInt(value))
-        return ("int"); 
+        return ("int");
     else if (isFloat(value))
         return ("float");
     else if (isDouble(value))
         return ("double");
-    return ("unknown");
+    return ("Unknown");
 }
 
-void printFromDouble(double d) {
-    std::cout << std::fixed << std::setprecision(1);
-    double char_min = 0;
-    double char_max = 127;
-    if (d < char_min || d > char_max) {
+static void printFromDouble(double val)
+{
+    int nb = static_cast<int>(val);
+
+    if (val < 0 || val > 127)
         std::cout << "char: impossible" << std::endl;
-    } else {
-        char c = static_cast<char>(d);
-        if (!std::isprint(static_cast<unsigned char>(c))) {
-            std::cout << "char: non displayable" << std::endl;
-        } else {
-            std::cout << "char: '" << c << "'" << std::endl;
-        }
-    }
-    double int_min = std::numeric_limits<int>::min();
-    double int_max = std::numeric_limits<int>::max();
-    if (d < int_min || d > int_max || d != static_cast<double>(static_cast<int>(d))) {
+    else if (!isprint(val))
+        std::cout << "char: Non displayable" << std::endl;
+    else
+        std::cout << "char: '" << static_cast<char>(val) << "'" << std::endl;
+
+    if (val >= static_cast<double>(INT_MIN) && val <= static_cast<double>(INT_MAX))
+        std::cout << "int: " << nb << std::endl;
+    else
         std::cout << "int: impossible" << std::endl;
-    } else {
-        std::cout << "int: " << static_cast<int>(d) << std::endl;
+    std::cout << "float: " << std::fixed << std::setprecision(1) << static_cast<float>(val) << "f" << std::endl;
+    std::cout << "double: " << std::scientific << std::setprecision(1) << val << std::endl;
+}
+
+static void printSpecials(std::string value){
+    std::string newVal = value;
+    bool isNeg = (value[0] == '-');
+
+    if (value[0] == '-' || value[0] == '+')
+        newVal = value.substr(1, value.length());
+    
+    if (newVal == "inf" || newVal == "inff"){
+        std::cout << "char: impossible" << std::endl;
+        std::cout << "int: impossible" << std::endl;
+        std::cout << "float: " << (isNeg ? "-" : "+") << "inff" << std::endl;
+        std::cout << "double: " << (isNeg ? "-" : "+") << "inf" << std::endl;
     }
-    std::cout << "float: " << static_cast<float>(d) << "f" << std::endl;
-    std::cout << "double: " << d << std::endl;
-}
-
-void printSpecial(std::string value) {
-    bool is_neg = (value.length() > 0 && value[0] == '-');
-    bool is_nan = value.find("nan") != std::string::npos;
-
-    std::string f_str, d_str;
-    if (is_nan) {
-        f_str = "nanf";
-        d_str = "nan";
-    } else {
-        f_str = is_neg ? "-inff" : "+inff";
-        d_str = is_neg ? "-inf" : "+inf";
-    }
-    std::cout << "char: impossible" << std::endl;
-    std::cout << "int: impossible" << std::endl;
-    std::cout << "float: " << f_str << std::endl;
-    std::cout << "double: " << d_str << std::endl;
-}
-
-void printChar(std::string value) {
-    double d = static_cast<double>(value[0]);
-    printFromDouble(d);
-}
-
-void printInt(std::string value) {
-    std::istringstream s(value);
-    int i;
-    s >> i;
-    double d = static_cast<double>(i);
-    printFromDouble(d);
-}
-
-void printFloat(std::string value) {
-    bool is_nan = value.find("nan") != std::string::npos;
-    bool is_inf = value.find("inf") != std::string::npos;
-    if (is_nan || is_inf) {
-        printSpecial(value);
-    } else {
-        std::string val_no_f = value.substr(0, value.length() - 1);
-        std::istringstream s(val_no_f);
-        float f;
-        s >> f;
-        printFromDouble(static_cast<double>(f));
+    else if (value == "nan" || value == "nanf"){
+        std::cout << "char: impossible" << std::endl;
+        std::cout << "int: impossible" << std::endl;
+        std::cout << "float: " << "nanf" << std::endl;
+        std::cout << "double: " << "nan" << std::endl;
     }
 }
 
-void printDouble(std::string value) {
-    bool is_nan = value.find("nan") != std::string::npos;
-    bool is_inf = value.find("inf") != std::string::npos;
-    if (is_nan || is_inf) {
-        printSpecial(value);
-    } else {
+
+void ScalarConverter::convert(std::string value)
+{
+    std::string type = detectType(value);
+
+    if (type == "Unknown" || type == "null")
+    {
+        std::cerr << RED << "Invalid argument" << RESET << std::endl;
+        return;
+    }
+
+    if (value == "nan" || value == "nanf" ||
+        value == "inf"  || value == "+inf"  || value == "-inf" ||
+        value == "inff" || value == "+inff" || value == "-inff")
+    {
+        printSpecials(value);
+        return;
+    }
+
+    if (type == "float")
+    {
+        std::string newVal = value.substr(0, value.length() - 1);
+        std::istringstream s(newVal);
+        float f_nbr;
+        s >> f_nbr;
+        printFromDouble(static_cast<double>(f_nbr));
+    } else if (type == "double"){
         std::istringstream s(value);
         double d;
         s >> d;
         printFromDouble(d);
     }
-}
-
-void ScalarConverter::convert(std::string value) {
-    std::string type = detectType(value);
-    if (type == "unknown") {
-        std::cout << RED << "unknown type" << RESET << std::endl;
-        return ;
-    }
-    if (type == "float" || type == "double") {
-        bool is_nan = value.find("nan") != std::string::npos;
-        bool is_inf = value.find("inf") != std::string::npos;
-        if (is_nan || is_inf) {
-            printSpecial(value);
-        } else {
-            if (type == "float") {
-                std::string val_no_f = value.substr(0, value.length() - 1);
-                std::istringstream s(val_no_f);
-                float f;
-                s >> f;
-                printFromDouble(static_cast<double>(f));
-            } else {
-                std::istringstream s(value);
-                double d;
-                s >> d;
-                printFromDouble(d);
-            }
-        }
-    } else if (type == "char") {
-        printChar(value);
-    } else if (type == "int") {
-        printInt(value);
+    else if (type == "char")
+        printFromDouble(static_cast<double>(value[0]));
+    else if (type == "int"){
+        std::istringstream s(value);
+        int nb;
+        s >> nb;
+        printFromDouble(static_cast<double>(nb));
     }
 }
