@@ -41,7 +41,7 @@ static bool isDouble(std::string value)
     double d;
     std::istringstream s(value);
     s >> d;
-     return ((!s.fail()) || isinf(d)) && s.eof();
+     return ((!s.fail()) || std::isinf(d)) && s.eof();
 }
 
 
@@ -76,7 +76,7 @@ static void printFromDouble(double val)
     else
         std::cout << "int: impossible" << std::endl;
     std::cout << "float: " << std::fixed << std::setprecision(1) << static_cast<float>(val) << "f" << std::endl;
-    std::cout << "double: " << std::scientific << std::setprecision(1) << val << std::endl;
+    std::cout << "double: " << std::fixed << std::setprecision(1) << val << std::endl;
 }
 
 static void printSpecials(std::string value){
