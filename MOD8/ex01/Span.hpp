@@ -4,24 +4,29 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <vector>
+#include <exception>
 
 template <typename T>
 class Span{
     private:
-        T *_arr;
+        std::vector<T> _arr;
         unsigned int _size;
     public:
         Span();
         Span(unsigned int nbr);
-        Span(const Span &src);
+        Span(const Span & src);
         ~Span();
+
         Span &operator=(const Span &src);
 
         void addNumber(T nbr);
-        unsigned int shortestSpan() const;
-        unsigned int longestSpan() const;
+        unsigned int size() const { return _arr.size(); }
+        T operator[](unsigned int i) const { return _arr[i]; }
+        T shortestSpan() const;
+        T longestSpan() const;
 };
 
-std::ostream &operator<<(std::ostream &o, const Span<int> &s);
+#include "Span.cpp"
 
 #endif

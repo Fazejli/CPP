@@ -1,63 +1,59 @@
 #include "Span.hpp"
 
-template<typename T>
-Span<T>::Span(){
-    this->_size = 0;
-    this->_arr = new T(1);
-}
+template <typename T>
+Span<T>::Span(): _size(0) {}
 
-template<typename T>
-Span<T>::Span(unsigned int nbr){
-    this->_size = nbr;
-    this->_arr = new T(nbr);
-}
+template <typename T>
+Span<T>::Span(unsigned int nbr) : _size(nbr) {}
+        
+template <typename T>
+Span<T>::Span(const Span & src) { *this = src; }
 
-template<typename T>
-Span<T>::~Span(){
-    delete[] this->_arr;
-}
+template <typename T>
+Span<T>::~Span() {}
 
-template<typename T>
-Span<T>::Span(const Span & src){
-    *this = src;
-}
-
-template<typename T>
+template <typename T>
 Span<T> &Span<T>::operator=(const Span &src){
     if (this != &src){
-        delete[] this->_arr;
         this->_size = src._size;
-        this->_arr = new T(_size);
-        for (int i = 0; i < _size; i++)
-            this->_arr[i] = src._arr[i];
+        this->_arr = src._arr;
     }
     return *this;
 }
 
-template<typename T>
+template <typename T>
 void Span<T>::addNumber(T nbr){
-    if (_arr.size() == nbr)
-        throw std::length_error();
-    else{
-        _arr.push_back(nbr);
-        _size++;}
+    if (this->_arr.size() >= this->_size)
+        throw std::length_error("Error: Can't add new attribute (Container complete)");
+    else
+        this->_arr.push_back(nbr);
 }
 
-template<typename T>
-unsigned int Span<T>::shortestSpan() const{
-    if (this->_size <= 1)
-        return NULL;
+template <typename T>
+T Span<T>::shortestSpan() const{
+    if (this->_arr.size() <= 1)
+        throw std::length_error("ShortestSpan Error: Container size <= 1");
+    
+    std::vector<T> sorted = this->_arr;
+    std::sort(sorted.begin(), sorted.end());
+    
+    T min = sorted[1] - sorted[0];
+    for (unsigned int i = 2; i < sorted.size(); i++){
+        T span = sorted[i] - sorted[i - 1];
+        if (span < min)
+            min = span;
+    }
+    return min;
 }
 
-template<typename T>
-unsigned int Span<T>::longestSpan() const{
-    if (this->_size <= 1)
-        return NULL;    
-}
 
-
-template<typename T>
-std::ostream &operator<<(std::ostream &o, const Span<T> &s){
-    o << s.getSize();
-    return o;
+template <typename T>
+T Span<T>::longestSpan() const{
+    if (this->_arr.size() <= 1)
+        throw std::length_error("LongestSpan Error: Container size <= 1");
+    
+    std::vector<T> sorted = this->_arr;
+    std::sort(sorted.begin(), sorted.end());
+    
+    return sorted.back() - sorted.front();
 }

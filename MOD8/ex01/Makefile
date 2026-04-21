@@ -6,15 +6,15 @@
 #    By: fadzejli <fadzejli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/21 12:14:43 by fadzejli          #+#    #+#              #
-#    Updated: 2026/04/21 13:24:17 by fadzejli         ###   ########.fr        #
+#    Updated: 2026/04/21 15:45:44 by fadzejli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = span
 CPP = c++
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98
-SRC = main.cpp Span.cpp
-OBJ = $(SRC:.c=.o)
+SRC = main.cpp
+OBJ = $(SRC:.cpp=.o)
 
 all: $(NAME)
 
