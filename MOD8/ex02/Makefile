@@ -5,31 +5,32 @@
 #                                                     +:+ +:+         +:+      #
 #    By: fadwa <fadwa@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/04/21 12:14:43 by fadzejli          #+#    #+#              #
-#    Updated: 2026/04/21 18:39:22 by fadwa            ###   ########.fr        #
+#    Created: 2026/04/21 10:41:53 by fadzejli          #+#    #+#              #
+#    Updated: 2026/04/21 19:00:19 by fadwa            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = span
+NAME = mutant
 CPP = c++
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98
-SRC = main.cpp Span.cpp
-OBJ = $(SRC:.cpp=.o)
+SRCS = main.cpp
+OBJS = $(SRCS:.cpp=.o)
+INC = easyfind.hpp
 
 all: $(NAME)
 
-$(NAME) : $(OBJ)
-	$(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
+$(NAME) : $(OBJS)
+	$(CPP) $(CPPFLAGS) $(OBJS) -o $(NAME)
 
 %.o : %.cpp
-	$(CPP) $(CPPFLAGS) -c $< -o $@
+	$(CPP) $(CPPFLAGS) -c $< -o $@	
 
-clean :
-	rm -rf $(OBJ)
+clean:
+	rm -rf $(OBJS)
 
-fclean : clean
+fclean: clean
 	rm -rf $(NAME)
 
-re : fclean all
+re: fclean all
 
 .PHONY: all clean fclean re

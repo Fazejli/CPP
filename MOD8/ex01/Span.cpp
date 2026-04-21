@@ -1,59 +1,46 @@
 #include "Span.hpp"
 
-template <typename T>
-Span<T>::Span(): _size(0) {}
+Span::Span() : _n(0){}
 
-template <typename T>
-Span<T>::Span(unsigned int nbr) : _size(nbr) {}
-        
-template <typename T>
-Span<T>::Span(const Span & src) { *this = src; }
+Span::~Span(){}
 
-template <typename T>
-Span<T>::~Span() {}
+Span::Span(unsigned int size) : _n(size){}
 
-template <typename T>
-Span<T> &Span<T>::operator=(const Span &src){
+Span::Span(const Span &src) : _n(src._n), _vector(src._vector){}
+
+Span &Span::operator=(const Span & src){
     if (this != &src){
-        this->_size = src._size;
-        this->_arr = src._arr;
+        this->_n = src._n;
+        this->_vector = src._vector;
     }
-    return *this;
+    return (*this);
 }
 
-template <typename T>
-void Span<T>::addNumber(T nbr){
-    if (this->_arr.size() >= this->_size)
-        throw std::length_error("Error: Can't add new attribute (Container complete)");
+void Span::addNumber(int nbr){
+    if (_vector.size() == _n)
+        throw std::length_error("Error: Container is full.");
     else
-        this->_arr.push_back(nbr);
+        _vector.push_back(nbr);
 }
 
-template <typename T>
-T Span<T>::shortestSpan() const{
-    if (this->_arr.size() <= 1)
-        throw std::length_error("ShortestSpan Error: Container size <= 1");
-    
-    std::vector<T> sorted = this->_arr;
+int Span::shortestSpan(){
+    if (_vector.size() <= 1)
+        throw std::length_error("Error: Container size <= 1.");
+    std::vector<int> sorted = _vector;
     std::sort(sorted.begin(), sorted.end());
-    
-    T min = sorted[1] - sorted[0];
-    for (unsigned int i = 2; i < sorted.size(); i++){
-        T span = sorted[i] - sorted[i - 1];
+    int min = sorted[1] - sorted[0];
+    for (size_t i = 1; i < sorted.size(); i++){
+        int span = sorted[i] - sorted[i - 1];
         if (span < min)
-            min = span;
+            min = span; 
     }
     return min;
 }
 
-
-template <typename T>
-T Span<T>::longestSpan() const{
-    if (this->_arr.size() <= 1)
-        throw std::length_error("LongestSpan Error: Container size <= 1");
-    
-    std::vector<T> sorted = this->_arr;
-    std::sort(sorted.begin(), sorted.end());
-    
-    return sorted.back() - sorted.front();
+int Span::longestSpan(){
+    if (_vector.size() <= 1)
+        throw std::length_error("Error: Container size <= 1.");
+    std::vector<int>::iterator min = std::min_element(_vector.begin(), _vector.end());
+    std::vector<int>::iterator max = std::max_element(_vector.begin(), _vector.end());
+    return (*max - *min);
 }

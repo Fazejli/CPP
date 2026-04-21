@@ -9,18 +9,20 @@
 #define WHITE   "\033[37m"
 #define RESET   "\033[0m"
 
+#include <cstdlib>
 #include <ctime>
 
-template <typename T>
-void printAll(const Span<T> &a){
+/*template <typename T>
+void printAll(Span a){
     for (unsigned int i = 0; i < a.size(); i++)
         std::cout << a[i] << " ";
     std::cout << "\n";
-}
+}*/
 
 int main()
 {
-    Span<int> sp(6);
+    srand(time(NULL));
+    Span sp = Span (6);
 
     std::cout << GREEN << "== Basic Test ==" << RESET << std::endl;
     try {
@@ -29,8 +31,8 @@ int main()
         sp.addNumber(6);
         sp.addNumber(100);
         sp.addNumber(3);
-        std::cout << "sp: ";
-        printAll(sp);
+        //std::cout << "sp: ";
+        //printAll(&sp);
         std::cout << "sp shortestSpan: " << sp.shortestSpan() << std::endl;
         std::cout << "sp longestSpan: " << sp.longestSpan() << std::endl;
     } catch(std::exception & e){
@@ -40,8 +42,9 @@ int main()
     std::cout << GREEN << "\n== Error Test: addNumber() exception" << RESET << std::endl;
     try {
         sp.addNumber(0);
-        std::cout << "sp: ";
-        printAll(sp);
+        std::cout << "new nb" << std::endl;
+        //std::cout << "sp: ";
+        //printAll(sp);
         sp.addNumber(42);
     } catch(std::exception & e){
         std::cerr << RED << e.what() << RESET << std::endl;
@@ -49,10 +52,10 @@ int main()
 
     std::cout << GREEN << "\n== SPAN Test: shortestSpan() && longestSpan() ==" << RESET << std::endl;
     try {
-        Span<int> sp2(1);
+        Span sp2(1);
         sp2.addNumber(0);
-        std::cout << "sp2: ";
-        printAll(sp2);
+        //std::cout << "sp2: ";
+        //printAll(sp2);
         std::cout << "sp shortestSpan: " << sp.shortestSpan() << std::endl;
         std::cout << "sp longestSpan: " << sp.longestSpan() << std::endl;
         std::cout << "sp2 shortestSpan: " << sp2.shortestSpan() << std::endl;
@@ -63,8 +66,18 @@ int main()
     }
 
     std::cout << GREEN << "\n== More tests ==" << RESET << std::endl;
-    srand(0);
+    std::vector<int> range;
+    for (int i = 0; i < 10000; i++)
+        range.push_back(rand());
 
+    Span large(10000);
+    try {
+        large.addRange(range.begin(), range.end());
+        std::cout << "ShortestSpan: " << large.shortestSpan() << std::endl;
+        std::cout << "LongestSpan: " << large.longestSpan() << std::endl;
+    } catch (std::exception &e) {
+        std::cerr << RED << e.what() << RESET << std::endl;
+    }
     return 0;
 }
 

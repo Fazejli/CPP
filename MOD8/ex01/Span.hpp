@@ -1,32 +1,38 @@
 #ifndef SPAN_HPP
 #define SPAN_HPP
 
-#include <string>
-#include <iostream>
 #include <algorithm>
+#include <iostream>
+#include <string>
 #include <vector>
 #include <exception>
+#include <stdexcept>
 
-template <typename T>
 class Span{
-    private:
-        std::vector<T> _arr;
-        unsigned int _size;
     public:
         Span();
-        Span(unsigned int nbr);
-        Span(const Span & src);
+        Span(unsigned int size);
+        Span(const Span &src);
+        Span &operator=(const Span & src);
         ~Span();
 
-        Span &operator=(const Span &src);
+        void addNumber(int nbr);
+        int shortestSpan();
+        int longestSpan();
 
-        void addNumber(T nbr);
-        unsigned int size() const { return _arr.size(); }
-        T operator[](unsigned int i) const { return _arr[i]; }
-        T shortestSpan() const;
-        T longestSpan() const;
+        template <typename T>
+        void addRange(T begin, T end) {
+            while (begin != end){
+                addNumber(*begin);
+                begin++;
+            }
+        }
+
+    private:
+        unsigned int _n;
+        std::vector<int> _vector;
 };
 
-#include "Span.cpp"
+
 
 #endif
