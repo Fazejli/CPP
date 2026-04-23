@@ -51,19 +51,20 @@ void RPN::calculate(std::string input){
         //operateur
         if (j <= 3){
             op = tokens[j];
-            if (_data.size() != 2){
-                std::cerr << RED << "Error: invalid input" << RESET << std::endl;
-                return ;}
-            else{
-                res = operations(_data.top(), _data.top(), op);
-                _data.pop();
-                _data.pop();
-                _data.push(res);}
+            int sec = _data.top();
+            _data.pop();
+            int first = _data.top();
+            _data.pop();
+            res = operations(first, sec, op);
+            _data.push(res);
         }
         //digit push to _data
         else if (input[i] >= '0' && input[i] <= '9'){
             if (input[i+1] >= '0' && input[i+1] <= '9'){
-                std::cerr << RED << "Error: invalid input" << RESET << std::endl;
+                std::cerr << RED << "Error: invalid input(digit)" << RESET << std::endl;
+                return ;}
+            if (_data.size() > 2){
+                std::cerr << RED << "Error: invalid input(size)" << RESET << std::endl;
                 return ;}
             _data.push(input[i] - '0');
         }
