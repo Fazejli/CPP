@@ -6,14 +6,14 @@
 #    By: fadzejli <fadzejli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/21 10:41:53 by fadzejli          #+#    #+#              #
-#    Updated: 2026/04/23 11:49:03 by fadzejli         ###   ########.fr        #
+#    Updated: 2026/04/23 16:29:04 by fadzejli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = btc
+NAME = RPN
 CPP = c++
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98
-SRCS = main.cpp BitcoinExchange.cpp
+SRCS = main.cpp RPN.cpp
 OBJS = $(SRCS:.cpp=.o)
 INC = easyfind.hpp
 
