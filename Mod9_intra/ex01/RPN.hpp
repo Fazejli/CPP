@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <stack>
 #include <string>
-#include <deque>
 
 class RPN {
     private:

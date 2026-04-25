@@ -43,11 +43,11 @@ void BitcoinExchange::loadDataBase(const std::string path){
 bool BitcoinExchange::isValidValue(std::string &value, float &val) const {
     if (value.empty())
         return false;
-    if (value != "0" && value != "0.0f" && std::atoi(value.c_str()) == 0){
+    if (value != "0" && value != "0.0f" && static_cast<float>(std::atof(value.c_str())) == 0){
         std::cerr << RED << "Error: not a valid number."  << RESET << std::endl;
         return false;}
     std::istringstream s(value);
-    s >> val;
+    s >> val && !s.eof();
     if (val < 0.0f ){
         std::cerr << RED << "Error: not a positive number." << RESET << std::endl;
         return false;}
@@ -99,8 +99,8 @@ float BitcoinExchange::getRate(std::string date) const{
     std::map<std::string, float>::const_iterator it = _data.lower_bound(date);
     if (it == _data.begin())
         return -1.0f;
-    else if (it != _data.end() && it->first != date)
-        *it--;
+    if (it == _data.end() || it->first != date)
+        --it;
     return (it->second);
 }
 
@@ -130,11 +130,11 @@ void BitcoinExchange::printBtc(std::string path){
         if (!isValidValue(value, output))
             continue ;
         else{
-            float res = this->getRate(date) * output;
-            if (res <= 0 && output != 0)
+            float res = this->getRate(date);
+            if (res < 0)
                 std::cerr << RED << "Error: data not found (too old)" << RESET << std::endl;
             else
-                std::cout << YELLOW << date << RESET << "=>" << YELLOW << value << RESET << " = " << MAGENTA << res << RESET << std::endl;
+                std::cout << YELLOW << date << RESET << "=>" << YELLOW << value << RESET << " = " << MAGENTA << res * output << RESET << std::endl;
         }
     }
 }

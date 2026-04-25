@@ -22,8 +22,10 @@ int operations(int first, int sec, char op){
         return (first + sec);
     else if (op == '*')
         return (first * sec);
-    else
-        return (first / sec);
+    else {
+        if (sec == 0)
+            throw std::runtime_error("Error: impossible division by 0");
+        return (first / sec);}
 }
 
 void RPN::calculate(std::string input){
@@ -51,20 +53,25 @@ void RPN::calculate(std::string input){
         //operateur
         if (j <= 3){
             op = tokens[j];
-            int sec = _data.top();
-            _data.pop();
-            int first = _data.top();
-            _data.pop();
-            res = operations(first, sec, op);
-            _data.push(res);
+            if (_data.size() < 2){
+                std::cerr << RED << "Error: invalid input(size)" << RESET << std::endl;
+                return ;}
+            try {
+                int sec = _data.top();
+                _data.pop();
+                int first = _data.top();
+                _data.pop();
+                res = operations(first, sec, op);
+                _data.push(res);}
+            catch (std::exception &e){
+                std::cerr << e.what() << std::endl;
+                return ;
+            }
         }
         //digit push to _data
         else if (input[i] >= '0' && input[i] <= '9'){
             if (input[i+1] >= '0' && input[i+1] <= '9'){
                 std::cerr << RED << "Error: invalid input(digit)" << RESET << std::endl;
-                return ;}
-            if (_data.size() > 2){
-                std::cerr << RED << "Error: invalid input(size)" << RESET << std::endl;
                 return ;}
             _data.push(input[i] - '0');
         }
@@ -75,5 +82,8 @@ void RPN::calculate(std::string input){
         }
         i++;
     }
-    std::cout << res << std::endl;
+    if (_data.size() != 1){
+        std::cerr << "Error: invalid input" << std::endl;
+        return ;}
+    std::cout << _data.top() << std::endl;
 }
