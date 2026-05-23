@@ -19,7 +19,7 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange & src){
 void BitcoinExchange::loadDataBase(const std::string path){
     std::ifstream db(path.c_str());
     if (!db.is_open()){
-        std::cerr << RED << "Error: Can't open data base"  << RESET << std::endl;
+        std::cerr << RED << "Error: Can't open data base" << RESET << std::endl;
         return ;
     }
     std::string line;
@@ -31,7 +31,7 @@ void BitcoinExchange::loadDataBase(const std::string path){
             continue ;
         std::istringstream ss(line);
         if (!getline(ss, date, ',') || !getline(ss, price, ',')){
-            std::cerr << RED << "Error: Data not found"  << RESET << std::endl;
+            std::cerr << RED << "Error: Data not found" << RESET << std::endl;
             return ;
         }
         std::istringstream s(price);
@@ -40,74 +40,108 @@ void BitcoinExchange::loadDataBase(const std::string path){
     }
 }
 
+// FIX: trim propre des espaces en debut/fin
+static std::string trim(const std::string &s){
+    size_t start = s.find_first_not_of(" \t\r\n");
+    if (start == std::string::npos)
+        return "";
+    size_t end = s.find_last_not_of(" \t\r\n");
+    return s.substr(start, end - start + 1);
+}
+
+// FIX: validation valeur via strtof pour detecter les caracteres invalides
 bool BitcoinExchange::isValidValue(std::string &value, float &val) const {
-    if (value.empty())
+    std::string trimmed = trim(value);
+    if (trimmed.empty()){
+        std::cerr << RED << "Error: not a valid number." << RESET << std::endl;
         return false;
-    if (value != "0" && value != "0.0f" && static_cast<float>(std::atof(value.c_str())) == 0){
-        std::cerr << RED << "Error: not a valid number."  << RESET << std::endl;
-        return false;}
-    std::istringstream s(value);
-    s >> val && !s.eof();
-    if (val < 0.0f ){
+    }
+    char *endptr;
+    val = std::strtof(trimmed.c_str(), &endptr);
+    if (endptr == trimmed.c_str() || *endptr != '\0'){
+        std::cerr << RED << "Error: not a valid number." << RESET << std::endl;
+        return false;
+    }
+    if (val < 0.0f){
         std::cerr << RED << "Error: not a positive number." << RESET << std::endl;
-        return false;}
+        return false;
+    }
     if (val > 1000.0f){
         std::cerr << RED << "Error: too large a number." << RESET << std::endl;
-        return false;}
-    return true;
-}
-
-bool BitcoinExchange::isValidDate(std::string &data) const {
-    if (data.empty())
         return false;
-    std::string date = data;
-    date.erase(date.length() - 1, 1);
-    std::string day;
-    std::string month;
-    std::string year;
-    std::istringstream ss(date);
-    getline(ss, year, '-');
-    getline(ss, month, '-');
-    getline(ss, day, '-');
-    int dayNb = std::atoi(day.c_str());
-    int monthNb = std::atoi(month.c_str());
-    int yearNb = std::atoi(year.c_str());
-    bool isLeapYear = (yearNb % 4 == 0 && yearNb % 100 != 0) || yearNb % 400 == 0;
-    bool flag = true; //if false alors 30j
-    if (year.size() != 4 || yearNb <= 0)
-        return false;
-    if (month.size() != 2 || monthNb <= 0 || monthNb > 12)
-        return false;
-    if (day.size() != 2 || dayNb <= 0 || dayNb > 31)
-        return false;
-    if (monthNb == 2){
-        if (!isLeapYear && dayNb > 28)
-            return false;
-        else if (dayNb > 29)
-            return false;
     }
-    if (monthNb < 8 && monthNb % 2)
-        flag = false;
-    else if (monthNb >= 8 && monthNb % 2 == 0)
-        flag = false;
-    if (flag && dayNb == 31)
-        return false;
     return true;
 }
 
-float BitcoinExchange::getRate(std::string date) const{
+// FIX: validation date corrigee — table des jours max par mois
+bool BitcoinExchange::isValidDate(std::string &data) const {
+    std::string date = trim(data);
+    if (date.empty())
+        return false;
+
+    std::string year, month, day;
+    std::istringstream ss(date);
+    if (!getline(ss, year, '-') || !getline(ss, month, '-') || !getline(ss, day, '-'))
+        return false;
+
+    // Verification des longueurs
+    if (year.size() != 4 || month.size() != 2 || day.size() != 2)
+        return false;
+
+    // Verification que ce sont bien des chiffres
+    for (size_t i = 0; i < year.size(); i++)
+        if (!isdigit(year[i])) return false;
+    for (size_t i = 0; i < month.size(); i++)
+        if (!isdigit(month[i])) return false;
+    for (size_t i = 0; i < day.size(); i++)
+        if (!isdigit(day[i])) return false;
+
+    int yearNb  = std::atoi(year.c_str());
+    int monthNb = std::atoi(month.c_str());
+    int dayNb   = std::atoi(day.c_str());
+
+    if (yearNb <= 0)
+        return false;
+    if (monthNb <= 0 || monthNb > 12)
+        return false;
+    if (dayNb <= 0)
+        return false;
+
+    // FIX: table des jours max — remplace la logique de flag inversee
+    bool isLeapYear = (yearNb % 4 == 0 && yearNb % 100 != 0) || (yearNb % 400 == 0);
+    int maxDay;
+    if (monthNb == 2)
+        maxDay = isLeapYear ? 29 : 28;
+    else if (monthNb == 4 || monthNb == 6 || monthNb == 9 || monthNb == 11)
+        maxDay = 30;
+    else
+        maxDay = 31;
+
+    if (dayNb > maxDay)
+        return false;
+
+    return true;
+}
+
+// FIX: getRate — gere correctement le cas ou la date est exactement la premiere entree
+float BitcoinExchange::getRate(std::string date) const {
     std::map<std::string, float>::const_iterator it = _data.lower_bound(date);
+    // Correspondance exacte
+    if (it != _data.end() && it->first == date)
+        return it->second;
+    // Date anterieure a toutes les entrees
     if (it == _data.begin())
         return -1.0f;
-    if (it == _data.end() || it->first != date)
-        --it;
-    return (it->second);
+    // Utilise la date inferieure la plus proche
+    --it;
+    return it->second;
 }
 
 void BitcoinExchange::printBtc(std::string path){
     std::ifstream db(path.c_str());
     if (!db.is_open()){
-        std::cerr << RED <<"Error: can't open file" << RESET << std::endl;
+        std::cerr << RED << "Error: can't open file" << RESET << std::endl;
+        return ;
     }
     std::string line;
     std::string date;
@@ -116,7 +150,8 @@ void BitcoinExchange::printBtc(std::string path){
     getline(db, line);
     if (line != "date | value"){
         std::cerr << RED << "Error: unknown form format" << RESET << std::endl;
-        return ;}
+        return ;
+    }
     while (getline(db, line)){
         if (line.empty())
             continue ;
@@ -124,17 +159,18 @@ void BitcoinExchange::printBtc(std::string path){
         getline(ss, date, '|');
         getline(ss, value, '|');
         if (!isValidDate(date)){
-            std::cerr << RED << "Error: bad input => " << RESET << date << std::endl;
+            // Affiche la date trimmee pour un message propre
+            std::cerr << RED << "Error: bad input => " << RESET << trim(date) << std::endl;
             continue ;
         }
         if (!isValidValue(value, output))
             continue ;
-        else{
-            float res = this->getRate(date);
+        else {
+            float res = this->getRate(trim(date));
             if (res < 0)
                 std::cerr << RED << "Error: data not found (too old)" << RESET << std::endl;
             else
-                std::cout << YELLOW << date << RESET << "=>" << YELLOW << value << RESET << " = " << MAGENTA << res * output << RESET << std::endl;
+                std::cout << YELLOW << trim(date) << RESET << " => " << YELLOW << trim(value) << RESET << " = " << MAGENTA << res * output << RESET << std::endl;
         }
     }
 }
