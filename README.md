@@ -21,13 +21,13 @@ The C++ modules at 42 are a progressive series of exercises designed to teach C+
 |:------:|--------|:-----:|
 | **CPP00** | Namespaces, classes, member functions, stdio streams, initialization lists |   80%|
 | **CPP01** | Memory allocation, references, pointers to members, file streams |   90%|
-| **CPP02** | Ad-hoc polymorphism, operator overloading, Orthodox Canonical Form | loading.. |
-| **CPP03** | Inheritance, base/derived classes | loading..  |
-| **CPP04** | Subtype polymorphism, abstract classes, interfaces, virtual functions | loading..  |
-| **CPP05** | Repetition and exceptions — try/catch, custom exception classes | In Progress |
-| **CPP06** | C++ casts — `static_cast`, `dynamic_cast`, `reinterpret_cast`, `const_cast` | In Progress |
-| **CPP07** | Templates — function templates, class templates | In Progress |
-| **CPP08** | Templated containers, iterators, algorithms — STL | In Progress |
+| **CPP02** | Ad-hoc polymorphism, operator overloading, Orthodox Canonical Form | 100% |
+| **CPP03** | Inheritance, base/derived classes | 100% |
+| **CPP04** | Subtype polymorphism, abstract classes, interfaces, virtual functions |  100%  |
+| **CPP05** | Repetition and exceptions — try/catch, custom exception classes | 100% |
+| **CPP06** | C++ casts — `static_cast`, `dynamic_cast`, `reinterpret_cast`, `const_cast` | 100% |
+| **CPP07** | Templates — function templates, class templates | 100% |
+| **CPP08** | Templated containers, iterators, algorithms — STL | 100% |
 | **CPP09** | STL containers in practice — `std::map`, `std::stack`, `std::vector` | In Progress |
 
 ---
