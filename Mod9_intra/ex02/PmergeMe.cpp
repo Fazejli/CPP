@@ -14,7 +14,6 @@ PMergeMe &PMergeMe::operator=(const PMergeMe &src){
     return (*this);
 }
 
-// Genere la suite de Jacobsthal jusqu'a n
 std::vector<int> PMergeMe::jacobsthal(int n) {
     std::vector<int> seq;
     seq.push_back(0);
@@ -26,12 +25,6 @@ std::vector<int> PMergeMe::jacobsthal(int n) {
     return seq;
 }
 
-// -----------------------------------------------------------------------
-// sortVect — Ford-Johnson sur std::vector
-// FIX: utilise un marqueur "used" pour eviter la mauvaise correspondance
-//      winner->loser en presence de doublons
-// FIX: inserted[0] marque des le depart (loser[0] est deja dans result)
-// -----------------------------------------------------------------------
 void PMergeMe::sortVect(std::vector<int> &src){
     if (src.size() <= 1)
         return ;
@@ -39,7 +32,6 @@ void PMergeMe::sortVect(std::vector<int> &src){
     bool hasStraggler = (src.size() % 2 != 0);
     int straggler = hasStraggler ? src[src.size() - 1] : 0;
 
-    // Construire les paires (loser, winner) — winner = max des deux
     std::vector<std::pair<int,int> > pairs;
     for (size_t i = 0; i + 1 < src.size(); i += 2){
         int a = src[i];
@@ -48,14 +40,11 @@ void PMergeMe::sortVect(std::vector<int> &src){
         pairs.push_back(std::make_pair(a, b)); // (loser, winner)
     }
 
-    // Trier recursivement les winners
     std::vector<int> winners;
     for (size_t i = 0; i < pairs.size(); i++)
         winners.push_back(pairs[i].second);
     sortVect(winners);
 
-    // FIX: reconstruire l'ordre des losers en utilisant un flag "used"
-    // pour eviter de matcher deux fois la meme paire quand des winners sont egaux
     std::vector<bool> used(pairs.size(), false);
     std::vector<int> losers;
     for (size_t i = 0; i < winners.size(); i++){
@@ -68,16 +57,13 @@ void PMergeMe::sortVect(std::vector<int> &src){
         }
     }
 
-    // Construire result : losers[0] suivi de tous les winners
     std::vector<int> result;
     result.push_back(losers[0]);
     for (size_t i = 0; i < winners.size(); i++)
         result.push_back(winners[i]);
 
-    // Inserer les losers restants dans l'ordre de Jacobsthal
     std::vector<int> jac = jacobsthal(losers.size());
 
-    // FIX: inserted[0] = true car losers[0] est deja dans result
     std::vector<bool> inserted(losers.size(), false);
     inserted[0] = true;
 
@@ -104,10 +90,6 @@ void PMergeMe::sortVect(std::vector<int> &src){
     src = result;
 }
 
-// -----------------------------------------------------------------------
-// sortDequ — Ford-Johnson sur std::deque
-// Memes corrections que sortVect
-// -----------------------------------------------------------------------
 void PMergeMe::sortDequ(std::deque<int> &src){
     if (src.size() <= 1)
         return ;
@@ -128,7 +110,6 @@ void PMergeMe::sortDequ(std::deque<int> &src){
         winners.push_back(pairs[i].second);
     sortDequ(winners);
 
-    // FIX: meme correction avec flag "used"
     std::vector<bool> used(pairs.size(), false);
     std::deque<int> losers;
     for (size_t i = 0; i < winners.size(); i++){
@@ -148,10 +129,8 @@ void PMergeMe::sortDequ(std::deque<int> &src){
 
     std::vector<int> jac = jacobsthal(losers.size());
 
-    // FIX: inserted[0] = true
     std::vector<bool> inserted(losers.size(), false);
     inserted[0] = true;
-
     for (size_t k = 1; k < jac.size(); k++){
         int idx = jac[k] - 1;
         if (idx >= (int)losers.size())

@@ -49,7 +49,6 @@ void RPN::calculate(std::string input){
         if (j == 4){
             i++;
             continue;}
-        //operateur
         if (j <= 3){
             op = tokens[j];
             if (_data.size() < 2){
