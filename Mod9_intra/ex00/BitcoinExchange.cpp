@@ -1,4 +1,5 @@
 #include "BitcoinExchange.hpp"
+#include "StringUtils.hpp"
 
 BitcoinExchange::BitcoinExchange(){
     BitcoinExchange::loadDataBase(DATA_BASE);
@@ -40,26 +41,16 @@ void BitcoinExchange::loadDataBase(const std::string path){
     }
 }
 
-// FIX: trim propre des espaces en debut/fin
-static std::string trim(const std::string &s){
-    size_t start = s.find_first_not_of(" \t\r\n");
-    if (start == std::string::npos)
-        return "";
-    size_t end = s.find_last_not_of(" \t\r\n");
-    return s.substr(start, end - start + 1);
-}
-
-// FIX: validation valeur via strtof pour detecter les caracteres invalides
 bool BitcoinExchange::isValidValue(std::string &value, float &val) const {
     std::string trimmed = trim(value);
     if (trimmed.empty()){
-        std::cerr << RED << "Error: not a valid number." << RESET << std::endl;
+        std::cerr << RED << "Error: not a valid value." << RESET << std::endl;
         return false;
     }
     char *endptr;
     val = std::strtof(trimmed.c_str(), &endptr);
     if (endptr == trimmed.c_str() || *endptr != '\0'){
-        std::cerr << RED << "Error: not a valid number." << RESET << std::endl;
+        std::cerr << RED << "Error: not a valid value." << RESET << std::endl;
         return false;
     }
     if (val < 0.0f){
@@ -73,7 +64,6 @@ bool BitcoinExchange::isValidValue(std::string &value, float &val) const {
     return true;
 }
 
-// FIX: validation date corrigee — table des jours max par mois
 bool BitcoinExchange::isValidDate(std::string &data) const {
     std::string date = trim(data);
     if (date.empty())
@@ -84,11 +74,9 @@ bool BitcoinExchange::isValidDate(std::string &data) const {
     if (!getline(ss, year, '-') || !getline(ss, month, '-') || !getline(ss, day, '-'))
         return false;
 
-    // Verification des longueurs
     if (year.size() != 4 || month.size() != 2 || day.size() != 2)
         return false;
 
-    // Verification que ce sont bien des chiffres
     for (size_t i = 0; i < year.size(); i++)
         if (!isdigit(year[i])) return false;
     for (size_t i = 0; i < month.size(); i++)
@@ -107,7 +95,6 @@ bool BitcoinExchange::isValidDate(std::string &data) const {
     if (dayNb <= 0)
         return false;
 
-    // FIX: table des jours max — remplace la logique de flag inversee
     bool isLeapYear = (yearNb % 4 == 0 && yearNb % 100 != 0) || (yearNb % 400 == 0);
     int maxDay;
     if (monthNb == 2)
@@ -123,16 +110,12 @@ bool BitcoinExchange::isValidDate(std::string &data) const {
     return true;
 }
 
-// FIX: getRate — gere correctement le cas ou la date est exactement la premiere entree
 float BitcoinExchange::getRate(std::string date) const {
     std::map<std::string, float>::const_iterator it = _data.lower_bound(date);
-    // Correspondance exacte
     if (it != _data.end() && it->first == date)
         return it->second;
-    // Date anterieure a toutes les entrees
     if (it == _data.begin())
         return -1.0f;
-    // Utilise la date inferieure la plus proche
     --it;
     return it->second;
 }
@@ -159,7 +142,6 @@ void BitcoinExchange::printBtc(std::string path){
         getline(ss, date, '|');
         getline(ss, value, '|');
         if (!isValidDate(date)){
-            // Affiche la date trimmee pour un message propre
             std::cerr << RED << "Error: bad input => " << RESET << trim(date) << std::endl;
             continue ;
         }
@@ -170,7 +152,7 @@ void BitcoinExchange::printBtc(std::string path){
             if (res < 0)
                 std::cerr << RED << "Error: data not found (too old)" << RESET << std::endl;
             else
-                std::cout << YELLOW << trim(date) << RESET << " => " << YELLOW << trim(value) << RESET << " = " << MAGENTA << res * output << RESET << std::endl;
+                std::cout << YELLOW << trim(date) << RESET << " => " << YELLOW << trim(value) << RESET << " = " << MAGENTA << formatFloat(res * output) << RESET << std::endl;
         }
     }
 }

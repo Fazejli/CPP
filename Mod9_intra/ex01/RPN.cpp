@@ -1,6 +1,5 @@
 #include "RPN.hpp"
 
-
 RPN::RPN(){}
 
 RPN::RPN(const RPN & src){
@@ -68,22 +67,20 @@ void RPN::calculate(std::string input){
                 return ;
             }
         }
-        //digit push to _data
         else if (input[i] >= '0' && input[i] <= '9'){
             if (input[i+1] >= '0' && input[i+1] <= '9'){
                 std::cerr << RED << "Error: invalid input(digit)" << RESET << std::endl;
                 return ;}
             _data.push(input[i] - '0');
         }
-        //invalid
         else{
-            std::cerr << RED << "Error: invalid input" << RESET << std::endl;
+            std::cerr << RED << "Error." << RESET << std::endl;
             return ;
         }
         i++;
     }
     if (_data.size() != 1){
-        std::cerr << "Error: invalid input" << std::endl;
+        std::cerr << RED << "Error: Usage: ./RPN \"8 9 * 9 - 1 + 2\"" << RESET << std::endl;
         return ;}
     std::cout << _data.top() << std::endl;
 }

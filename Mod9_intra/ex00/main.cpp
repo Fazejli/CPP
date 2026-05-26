@@ -1,12 +1,13 @@
 #include "BitcoinExchange.hpp"
+
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>   
 #include <string>
-
 #include <stdlib.h>
-int main(int ac, char **av){
+
+int main(int ac, char **av) {
     if (ac != 2){
         std::cerr << RED << "Error: Usage: ./btc <file>\n" << RESET;
         return 1;}
