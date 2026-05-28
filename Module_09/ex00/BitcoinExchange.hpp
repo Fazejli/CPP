@@ -32,7 +32,7 @@ class BitcoinExchange {
         BitcoinExchange &operator=(const BitcoinExchange & src);
 
         void loadDataBase(const std::string path);
-        void printBtc(std::string path);
+        void printBtc(std::ifstream& db);
         float getRate(std::string date) const;
     
     private:

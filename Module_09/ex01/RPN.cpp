@@ -28,12 +28,11 @@ int operations(int first, int sec, char op){
 }
 
 void RPN::calculate(std::string input){
-    char tokens[5] = {
+    char tokens[4] = {
         '*',
         '-',
         '+',
         '/',
-        ' '
     };
     char op;
     int res;
@@ -41,14 +40,11 @@ void RPN::calculate(std::string input){
     while (input[i])
     {
         int j = 0;
-        while (j < 5){
+        while (j < 4){
             if (input[i] == tokens[j])
                 break ;
             j++;
         }
-        if (j == 4){
-            i++;
-            continue;}
         if (j <= 3){
             op = tokens[j];
             if (_data.size() < 2){
@@ -62,19 +58,18 @@ void RPN::calculate(std::string input){
                 res = operations(first, sec, op);
                 _data.push(res);}
             catch (std::exception &e){
-                std::cerr << e.what() << std::endl;
+                std::cerr << RED << e.what() << RESET << std::endl;
                 return ;
             }
         }
-        else if (input[i] >= '0' && input[i] <= '9'){
-            if (input[i+1] >= '0' && input[i+1] <= '9'){
-                std::cerr << RED << "Error: invalid input(digit)" << RESET << std::endl;
+        else {
+            if (input[i] == ' '){
+                i++;
+                continue;}
+            if (!isdigit(input[i]) || isdigit(input[i + 1])){
+                std::cerr << RED << "Error." << RESET << std::endl;
                 return ;}
             _data.push(input[i] - '0');
-        }
-        else{
-            std::cerr << RED << "Error." << RESET << std::endl;
-            return ;
         }
         i++;
     }

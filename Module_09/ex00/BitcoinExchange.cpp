@@ -1,16 +1,17 @@
 #include "BitcoinExchange.hpp"
 #include "StringUtils.hpp"
+#include <exception>
 
 BitcoinExchange::BitcoinExchange(){
     BitcoinExchange::loadDataBase(DATA_BASE);
 }
-        
+
 BitcoinExchange::BitcoinExchange(const BitcoinExchange & src){
     this->_data = src._data;
 }
         
 BitcoinExchange::~BitcoinExchange(){}
-        
+
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange & src){
     if (this != &src)
         this->_data = src._data;
@@ -31,7 +32,7 @@ void BitcoinExchange::loadDataBase(const std::string path){
         if (line == "date,exchange_rate")
             continue ;
         std::istringstream ss(line);
-        if (!getline(ss, date, ',') || !getline(ss, price, ',')){
+        if (!getline(ss, date, ',') || !getline(ss, price)){
             std::cerr << RED << "Error: Data not found" << RESET << std::endl;
             return ;
         }
@@ -71,7 +72,7 @@ bool BitcoinExchange::isValidDate(std::string &data) const {
 
     std::string year, month, day;
     std::istringstream ss(date);
-    if (!getline(ss, year, '-') || !getline(ss, month, '-') || !getline(ss, day, '-'))
+    if (!getline(ss, year, '-') || !getline(ss, month, '-') || !getline(ss, day))
         return false;
 
     if (year.size() != 4 || month.size() != 2 || day.size() != 2)
@@ -87,6 +88,10 @@ bool BitcoinExchange::isValidDate(std::string &data) const {
     int yearNb  = std::atoi(year.c_str());
     int monthNb = std::atoi(month.c_str());
     int dayNb   = std::atoi(day.c_str());
+
+    std::string extra;
+    if (getline(ss, extra) && !extra.empty())
+        return false;
 
     if (yearNb <= 0)
         return false;
@@ -106,7 +111,6 @@ bool BitcoinExchange::isValidDate(std::string &data) const {
 
     if (dayNb > maxDay)
         return false;
-
     return true;
 }
 
@@ -115,13 +119,12 @@ float BitcoinExchange::getRate(std::string date) const {
     if (it != _data.end() && it->first == date)
         return it->second;
     if (it == _data.begin())
-        return -1.0f;
+        throw std::runtime_error("no data found (too old).");
     --it;
     return it->second;
 }
 
-void BitcoinExchange::printBtc(std::string path){
-    std::ifstream db(path.c_str());
+void BitcoinExchange::printBtc(std::ifstream & db){
     if (!db.is_open()){
         std::cerr << RED << "Error: can't open file" << RESET << std::endl;
         return ;
@@ -131,7 +134,7 @@ void BitcoinExchange::printBtc(std::string path){
     std::string value;
     float output;
     getline(db, line);
-    if (line != "date | value"){
+    if (trim(line) != "date | value"){
         std::cerr << RED << "Error: unknown form format" << RESET << std::endl;
         return ;
     }
@@ -148,11 +151,13 @@ void BitcoinExchange::printBtc(std::string path){
         if (!isValidValue(value, output))
             continue ;
         else {
-            float res = this->getRate(trim(date));
-            if (res < 0)
-                std::cerr << RED << "Error: data not found (too old)" << RESET << std::endl;
-            else
-                std::cout << YELLOW << trim(date) << RESET << " => " << YELLOW << trim(value) << RESET << " = " << MAGENTA << formatFloat(res * output) << RESET << std::endl;
+            try {
+                float res = this->getRate(trim(date));
+                std::cout << YELLOW << trim(date) << RESET << " => " << YELLOW << trim(value) << RESET << " = " << MAGENTA << formatFloat(res * output) << RESET << std::endl;}
+            catch (std::exception & e){
+                std::cerr << RED << "Error: " << e.what() << RESET << std::endl;
+            }
         }
-    }
+   }
 }
+

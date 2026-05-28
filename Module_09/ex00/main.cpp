@@ -24,6 +24,6 @@ int main(int ac, char **av) {
         std::cerr << RED << "Error: Can't open dataBase\n" << RESET;
         return 1;}
     BitcoinExchange btc;
-    btc.printBtc(arg.c_str());
+    btc.printBtc(input);
     return 0;
 }
